@@ -1,0 +1,6 @@
+oscookie.egg-info/
+pypi.sh
+build/
+dist/
+*.egg
+*.pyc

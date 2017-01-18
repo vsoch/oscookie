@@ -1,0 +1,15 @@
+musl
+busybox
+alpine-baselayout
+openrc
+alpine-conf
+zlib
+libcrypto1.0
+libssl1.0
+apk-tools
+busybox-initscripts
+scanelf
+musl-utils
+libc-utils
+alpine-keys
+alpine-base
