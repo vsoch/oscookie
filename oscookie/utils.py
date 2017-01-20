@@ -16,6 +16,12 @@ import oscookie.__init__ as hello
 from oscookie.logman import bot
 import sys
 
+from subprocess import (
+    Popen,
+    PIPE,
+    STDOUT
+)
+
 import subprocess
 
 import tempfile
@@ -31,6 +37,27 @@ def get_installdir():
     '''get_installdir returns the installation directory of the application
     '''
     return os.path.abspath(os.path.dirname(hello.__file__))
+
+
+def check_installed(software):
+    '''check_installed will check if a software is installed
+    :param software: the name of the software
+    '''
+    testing_command = ["which", software]
+    return run_command(testing_command)
+
+
+def run_command(command):
+    '''run_command will run a command (a list)
+    :param command: the command to run
+    '''
+    if not isinstance(command,list):
+        command = [command]
+    output = Popen(command,stderr=STDOUT,stdout=PIPE)
+    t = output.communicate()[0],output.returncode
+    result = {'message':t[0],
+              'return_code':t[1]}
+    return result
 
 
 def run_command(cmd,error_message=None,sudopw=None,suppress=False):

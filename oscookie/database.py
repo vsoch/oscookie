@@ -31,7 +31,7 @@ def generate_os_packages(outdir=None):
     param outdir: the output directory for the lists, a series of text files
     '''
     if outdir == None:
-        outdir = "%s/lists" %get_installdir()
+        outdir = "%s/lists/base" %get_installdir()
 
     ## OS IMAGES (provided via official docker library)
     images = get_baseos()
@@ -44,7 +44,7 @@ def generate_os_packages(outdir=None):
         bot.logger.info("Generating list for %s",image)        
         baseos,version = image.split(':')
         if baseos in managers:
-            manager_command = managers[baseos]
+            manager_command = managers[baseos]['list']
             outfile = '%s/%s.txt' %(outdir,image)
             if not os.path.exists(outfile):
                 os.system('docker run %s %s >> %s' %(image, manager_command, outfile))
@@ -64,7 +64,7 @@ def generate_python_packages(outdir=None):
     will use lists
     '''
     if outdir == None:
-        outdir = "%s/lists" %get_installdir()
+        outdir = "%s/lists/language" %get_installdir()
    
     outfile = '%s/pypi.txt' %(outdir)
     client = xmlrpclib.ServerProxy('https://pypi.python.org/pypi')

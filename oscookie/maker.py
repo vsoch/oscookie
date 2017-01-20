@@ -5,13 +5,22 @@ maker.py: Supplementary functions to help with toy analysis
 
 '''
 
-def generate_random_spec():
+import sys
+
+def generate_random_spec(spec_type=None):
     '''generate_random_spec is the main function to generate a random
     spec file. Depending on the file, a different command (eg package
     manager) will be run to download software.
     '''
     # Collect inputs for number to generate
+    if spec_type == None:
+        spec_type = "Singularity"
 
+    if spec_type != "Singularity":
+        print("Currently only supported spec type is Singularity, sorry.")
+        sys.exit(1)
+
+    
     # For each
     # select random operating system
     # Select random number for install and remove

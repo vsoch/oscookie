@@ -28,13 +28,13 @@ def get_baseos():
 
 # We will generate a package list for each distribution based on the base
 def get_managers():
-  return {'ubuntu':'apt list',
-          'alpine':'apk info',
-          'debian':'apt list',
-          'oraclelinux':'yum list',
-          'centos':'yum list',
-          'debian':'apt list',
-          'fedora':'dnf list',
-          'opensuse':'rpm -qa',
-          'mageia':'rpm -qa',
-          'photon':'rpm -qa'}
+  return {'ubuntu':{"list":'apt list'},
+          'alpine':{"list":'apk info'},
+          'debian':{"list":'apt list'},
+          'oraclelinux':{"list":'yum list'},
+          'centos':{"list":'yum list'},
+          'debian':{"list":'apt list'},
+          'fedora':{"list":'dnf list'},
+          'opensuse':{"list":'rpm -qa'},
+          'mageia':{"list":'rpm -qa'},
+          'photon':{"list":'rpm -qa'}}
