@@ -22,7 +22,10 @@ from subprocess import (
 import requests
 import sys
 
-
+if sys.version_info[0] < 3: 
+    from StringIO import StringIO
+else:
+    from io import StringIO
 
 
 def docker_search(term,stars=None,limit=None):
@@ -41,7 +44,15 @@ def docker_search(term,stars=None,limit=None):
         cmd = cmd + ['--stars',stars]
 
     result = run_command(cmd)
-    # STOPPED HERE - need to parse the above
+    if result['return_code'] == 0:
+        containers = [x.split(' ')[0] for x in result['message'].decode('utf-8').split('\n')]    
+        containers = [x for x in containers if len(x)>0]
+        return containers
+
+    bot.logger.warning("Potential problem with search:")
+    bot.logger.warning(result['message'])
+    return None
+
 
 
 def get_dockerfile(image):
@@ -60,6 +71,7 @@ def get_dockerfile(image):
     soup = BeautifulSoup(response, 'html.parser')
 
     # Find the dockerfile
+    dockerfile = None
     for contender in soup.find_all('div'):
         if contender is not None:
             if contender.get('class') is not None:
@@ -67,15 +79,11 @@ def get_dockerfile(image):
                     dockerfile = contender
 
     # Recreate the lines
-    lines = []
-    for line in dockerfile.find_all('span'):
-        if line.get('class') is not None:
-            if isinstance(line.text,list):
-                lines.append(' '.join(line.text))
-            else:                
-                lines.append(line.text)
+    if dockerfile == None:
+        return dockerfile
 
-    return ''.join(lines)
+    bot.logger.debug('Found Dockerfile for %s',image)
+    return dockerfile.text
             
 
 def parse_image_uri(image,default_namespace=None):
